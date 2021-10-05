@@ -16,4 +16,6 @@ public class ServerInfo {
     private Integer port;
 
     private String address;
+
+    private String publishAddress;
 }

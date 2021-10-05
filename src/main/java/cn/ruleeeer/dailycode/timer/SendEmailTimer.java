@@ -40,12 +40,10 @@ public class SendEmailTimer {
             for (EmailSubscribe emailSubscribe : list) {
                 SendDailyCodeEmailTask task = new SendDailyCodeEmailTask(date, emailSubscribe.getEmail());
                 ListenableFuture<Void> future = sendEmailThreadPool.submitListenable(task);
-                future.addCallback(data->{
-//                    record success
-                    System.out.println(data);
-                } ,ex -> {
-                    System.out.println(ex);
-                });
+                //                    record success
+//                future.addCallback(System.out::println, ex -> {
+//                    System.out.println(ex);
+//                });
             }
         }
     }

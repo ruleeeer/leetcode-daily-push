@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+
+
+    <property name="logPath" value="/app/logs"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight --- [%thread] %cyan(%logger{40}) : %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="info_log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件路径和名称-->
+        <File>${logPath}/dailyCode/info.log</File>
+        <!--是否追加到文件末尾,默认为true-->
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch><!-- 如果命中就接受-->
+            <onMismatch>DENY</onMismatch><!-- 如果没有命中就忽略 -->
+        </filter>
+        <!--有两个与RollingFileAppender交互的重要子组件。 第一个RollingFileAppender子组件，即RollingPolicy:负责执行翻转所需的操作。
+         RollingFileAppender的第二个子组件，即TriggeringPolicy:将确定是否以及何时发生翻转。 因此，RollingPolicy负责什么和TriggeringPolicy负责什么时候.
+        作为任何用途，RollingFileAppender必须同时设置RollingPolicy和TriggeringPolicy,但是，如果其RollingPolicy也实现了TriggeringPolicy接口，则只需要显式指定前者。-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 日志文件的名字会根据fileNamePattern的值，每隔一段时间改变一次 -->
+            <!-- 文件名：logs/project_info.2017-12-05.0.log -->
+            <!-- 注意：SizeAndTimeBasedRollingPolicy中 ％i和％d令牌都是强制性的，必须存在，要不会报错 -->
+            <fileNamePattern>${logPath}/dailyCode/info.log.%d.%i</fileNamePattern>
+            <!-- 每产生一个日志文件，该日志文件的保存期限为30天, ps:maxHistory的单位是根据fileNamePattern中的翻转策略自动推算出来的,例如上面选用了yyyy-MM-dd,则单位为天
+            如果上面选用了yyyy-MM,则单位为月,另外上面的单位默认为yyyy-MM-dd-->
+            <maxHistory>30</maxHistory>
+            <!-- 每个日志文件到10mb的时候开始切分，最多保留30天，但最大到20GB，哪怕没到30天也要删除多余的日志 -->
+            <totalSizeCap>20GB</totalSizeCap>
+            <!-- maxFileSize:这是活动文件的大小，默认值是10MB，测试时可改成5KB看效果 -->
+            <maxFileSize>100MB</maxFileSize>
+        </rollingPolicy>
+        <!--编码器-->
+        <encoder>
+            <!-- pattern节点，用来设置日志的输入格式 ps:日志文件中没有设置颜色,否则颜色部分会有ESC[0:39em等乱码-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight --- [%thread] %cyan(%logger{40}) : %msg%n</pattern>
+            <!-- 记录日志的编码:此处设置字符集 - -->
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="warn_log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件路径和名称-->
+        <File>${logPath}/dailyCode/warn.log</File>
+        <!--是否追加到文件末尾,默认为true-->
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch><!-- 如果命中就接受-->
+            <onMismatch>DENY</onMismatch><!-- 如果没有命中就忽略 -->
+        </filter>
+        <!--有两个与RollingFileAppender交互的重要子组件。 第一个RollingFileAppender子组件，即RollingPolicy:负责执行翻转所需的操作。
+         RollingFileAppender的第二个子组件，即TriggeringPolicy:将确定是否以及何时发生翻转。 因此，RollingPolicy负责什么和TriggeringPolicy负责什么时候.
+        作为任何用途，RollingFileAppender必须同时设置RollingPolicy和TriggeringPolicy,但是，如果其RollingPolicy也实现了TriggeringPolicy接口，则只需要显式指定前者。-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 日志文件的名字会根据fileNamePattern的值，每隔一段时间改变一次 -->
+            <!-- 文件名：logs/project_info.2017-12-05.0.log -->
+            <!-- 注意：SizeAndTimeBasedRollingPolicy中 ％i和％d令牌都是强制性的，必须存在，要不会报错 -->
+            <fileNamePattern>${logPath}/dailyCode/warn.log.%d.%i</fileNamePattern>
+            <!-- 每产生一个日志文件，该日志文件的保存期限为30天, ps:maxHistory的单位是根据fileNamePattern中的翻转策略自动推算出来的,例如上面选用了yyyy-MM-dd,则单位为天
+            如果上面选用了yyyy-MM,则单位为月,另外上面的单位默认为yyyy-MM-dd-->
+            <maxHistory>30</maxHistory>
+            <!-- 每个日志文件到10mb的时候开始切分，最多保留30天，但最大到20GB，哪怕没到30天也要删除多余的日志 -->
+            <totalSizeCap>20GB</totalSizeCap>
+            <!-- maxFileSize:这是活动文件的大小，默认值是10MB，测试时可改成5KB看效果 -->
+            <maxFileSize>100MB</maxFileSize>
+        </rollingPolicy>
+        <!--编码器-->
+        <encoder>
+            <!-- pattern节点，用来设置日志的输入格式 ps:日志文件中没有设置颜色,否则颜色部分会有ESC[0:39em等乱码-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight --- [%thread] %cyan(%logger{40}) : %msg%n</pattern>
+            <!-- 记录日志的编码:此处设置字符集 - -->
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="error_log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件路径和名称-->
+        <File>${logPath}/dailyCode/error.log</File>
+        <!--是否追加到文件末尾,默认为true-->
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch><!-- 如果命中就接受-->
+            <onMismatch>DENY</onMismatch><!-- 如果没有命中就忽略 -->
+        </filter>
+        <!--有两个与RollingFileAppender交互的重要子组件。 第一个RollingFileAppender子组件，即RollingPolicy:负责执行翻转所需的操作。
+         RollingFileAppender的第二个子组件，即TriggeringPolicy:将确定是否以及何时发生翻转。 因此，RollingPolicy负责什么和TriggeringPolicy负责什么时候.
+        作为任何用途，RollingFileAppender必须同时设置RollingPolicy和TriggeringPolicy,但是，如果其RollingPolicy也实现了TriggeringPolicy接口，则只需要显式指定前者。-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 日志文件的名字会根据fileNamePattern的值，每隔一段时间改变一次 -->
+            <!-- 文件名：logs/project_info.2017-12-05.0.log -->
+            <!-- 注意：SizeAndTimeBasedRollingPolicy中 ％i和％d令牌都是强制性的，必须存在，要不会报错 -->
+            <fileNamePattern>${logPath}/dailyCode/error.log.%d.%i</fileNamePattern>
+            <!-- 每产生一个日志文件，该日志文件的保存期限为30天, ps:maxHistory的单位是根据fileNamePattern中的翻转策略自动推算出来的,例如上面选用了yyyy-MM-dd,则单位为天
+            如果上面选用了yyyy-MM,则单位为月,另外上面的单位默认为yyyy-MM-dd-->
+            <maxHistory>30</maxHistory>
+            <!-- 每个日志文件到10mb的时候开始切分，最多保留30天，但最大到20GB，哪怕没到30天也要删除多余的日志 -->
+            <totalSizeCap>20GB</totalSizeCap>
+            <!-- maxFileSize:这是活动文件的大小，默认值是10MB，测试时可改成5KB看效果 -->
+            <maxFileSize>100MB</maxFileSize>
+        </rollingPolicy>
+        <!--编码器-->
+        <encoder>
+            <!-- pattern节点，用来设置日志的输入格式 ps:日志文件中没有设置颜色,否则颜色部分会有ESC[0:39em等乱码-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight --- [%thread] %cyan(%logger{40}) : %msg%n</pattern>
+            <!-- 记录日志的编码:此处设置字符集 - -->
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="cn.ruleeeer.dailycode.mapper" level="INFO"/>
+    <logger name="cn.ruleeeer.dailycode.service" level="INFO"/>
+    <logger name="cn.ruleeeer.dailycode.timer" level="INFO"/>
+
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="info_log"/>
+        <appender-ref ref="warn_log"/>
+        <appender-ref ref="error_log"/>
+    </root>
+</configuration>

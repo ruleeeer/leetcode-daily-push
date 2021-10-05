@@ -1,0 +1,15 @@
+spring:
+  mail:
+    host:
+    username:
+    password:
+    default-encoding: UTF-8
+    port:
+    properties:
+      mail:
+        smtp:
+          auth:
+          starttls:
+            enable:
+            required:
+    protocol:

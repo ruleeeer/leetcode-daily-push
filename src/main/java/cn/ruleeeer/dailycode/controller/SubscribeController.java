@@ -14,7 +14,6 @@ import javax.validation.constraints.Email;
  * @date 2021/10/2 17:50
  */
 @RestController
-@RequestMapping("")
 @Validated
 public class SubscribeController {
 

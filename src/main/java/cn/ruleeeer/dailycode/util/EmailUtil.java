@@ -3,6 +3,7 @@ package cn.ruleeeer.dailycode.util;
 import cn.ruleeeer.dailycode.bean.DailyCode;
 import cn.ruleeeer.dailycode.bean.MailContent;
 import cn.ruleeeer.dailycode.bean.MyConstant;
+import cn.ruleeeer.dailycode.config.ServerInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -24,11 +25,12 @@ public class EmailUtil {
     @Autowired
     private JavaMailSender mailSender;
 
+    @Autowired
+    private ServerInfo serverInfo;
+
     @Value("${spring.mail.username}")
     private String sender;
 
-    @Autowired
-    private FetchUtil fetchUtil;
 
 
     public void sendMail(MailContent mailContent) throws MessagingException {
@@ -44,8 +46,9 @@ public class EmailUtil {
 
     public MailContent buildDailyCodeEmail(DailyCode dailyCode, String receiver) {
         String subject = String.format("%s LeetCode每日一题( %s )", LocalDate.now().format(MyConstant.fmt), dailyCode.getTitle());
+        String unsubscribeLink = String.format(MyConstant.TEMPLATE_UNSUBSCRIBE_LINK, serverInfo.getAddress(), serverInfo.getPort(), receiver);
         String leetCodeContent = String.format(MyConstant.TEMPLATE_DAILY_CODE, dailyCode.getNumber(), dailyCode.getTitle(), dailyCode.getLevel(), dailyCode.getContent(), dailyCode.getLink(), dailyCode.getLink(),
-                "localhost:8080/unsubscribe/" + receiver);
+                unsubscribeLink);
         return MailContent.builder()
                 .subject(subject)
                 .htmlContent(leetCodeContent)

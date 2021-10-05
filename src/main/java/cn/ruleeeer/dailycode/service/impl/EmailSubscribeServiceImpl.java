@@ -4,10 +4,9 @@ import cn.ruleeeer.dailycode.bean.*;
 import cn.ruleeeer.dailycode.bean.emailtask.SendDailyCodeEmailTask;
 import cn.ruleeeer.dailycode.bean.emailtask.SendSimpleEmailTask;
 import cn.ruleeeer.dailycode.bean.po.EmailSubscribe;
+import cn.ruleeeer.dailycode.config.ServerInfo;
 import cn.ruleeeer.dailycode.mapper.EmailSubscribeMapper;
 import cn.ruleeeer.dailycode.service.EmailSubscribeService;
-import cn.ruleeeer.dailycode.util.EmailUtil;
-import cn.ruleeeer.dailycode.util.FetchUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import java.time.LocalDate;
 
 /**
@@ -31,10 +29,7 @@ public class EmailSubscribeServiceImpl extends ServiceImpl<EmailSubscribeMapper,
     private EmailSubscribeMapper subscribeMapper;
 
     @Autowired
-    private EmailUtil emailUtil;
-
-    @Autowired
-    private FetchUtil fetchUtil;
+    private ServerInfo serverInfo;
 
     @Autowired
     private ThreadPoolTaskExecutor sendEmailThreadPool;
@@ -52,10 +47,10 @@ public class EmailSubscribeServiceImpl extends ServiceImpl<EmailSubscribeMapper,
                     .build();
         } else {
 //            send verification to confirm subscription
-            String link = String.format("http://localhost:8080/ensure/%s", email);
+            String link = String.format(MyConstant.TEMPLATE_ENSURE_SUBSCRIBE_LINK, serverInfo.getAddress(), serverInfo.getPort(), email);
             MailContent ensureEmail = MailContent.builder()
                     .receiver(email)
-                    .subject("确认订阅LeetCode每日一题?")
+                    .subject("每日一题确认订阅邮件")
                     .htmlContent(String.format(MyConstant.TEMPLATE_VERIFICATION, link))
                     .build();
             sendEmailThreadPool.submit(new SendSimpleEmailTask(ensureEmail));

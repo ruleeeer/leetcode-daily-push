@@ -1,9 +1,6 @@
 spring:
-  devtools:
-    restart:
-      enabled: true
-
   profiles:
     include:
       - mysql
       - mail
+      - server

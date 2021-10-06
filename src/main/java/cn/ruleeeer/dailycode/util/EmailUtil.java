@@ -32,7 +32,6 @@ public class EmailUtil {
     private String sender;
 
 
-
     public void sendMail(MailContent mailContent) throws MessagingException {
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -46,7 +45,7 @@ public class EmailUtil {
 
     public MailContent buildDailyCodeEmail(DailyCode dailyCode, String receiver) {
         String subject = String.format("%s LeetCode每日一题( %s )", LocalDate.now().format(MyConstant.fmt), dailyCode.getTitle());
-        String unsubscribeLink = String.format(MyConstant.TEMPLATE_UNSUBSCRIBE_LINK, serverInfo.getPublishAddress(), serverInfo.getPort(), receiver);
+        String unsubscribeLink = String.format(MyConstant.TEMPLATE_UNSUBSCRIBE_LINK, serverInfo.getPublishAddress(), receiver);
         String leetCodeContent = String.format(MyConstant.TEMPLATE_DAILY_CODE, dailyCode.getNumber(), dailyCode.getTitle(), dailyCode.getLevel(), dailyCode.getContent(), dailyCode.getLink(), dailyCode.getLink(),
                 unsubscribeLink);
         return MailContent.builder()

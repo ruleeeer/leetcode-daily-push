@@ -47,7 +47,7 @@ public class EmailSubscribeServiceImpl extends ServiceImpl<EmailSubscribeMapper,
                     .build();
         } else {
 //            send verification to confirm subscription
-            String link = String.format(MyConstant.TEMPLATE_ENSURE_SUBSCRIBE_LINK, serverInfo.getPublishAddress(), serverInfo.getPort(), email);
+            String link = String.format(MyConstant.TEMPLATE_ENSURE_SUBSCRIBE_LINK, serverInfo.getPublishAddress(), email);
             MailContent ensureEmail = MailContent.builder()
                     .receiver(email)
                     .subject("每日一题确认订阅邮件")

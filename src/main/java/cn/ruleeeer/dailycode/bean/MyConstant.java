@@ -49,7 +49,7 @@ public class MyConstant {
             </html>
             """;
 
-    public static String TEMPLATE_ENSURE_SUBSCRIBE_LINK = "http://%s:%s/ensure/%s";
+    public static String TEMPLATE_ENSURE_SUBSCRIBE_LINK = "http://%s/ensure/%s";
 
-    public static String TEMPLATE_UNSUBSCRIBE_LINK = "http://%s:%s/unsubscribe/%s";
+    public static String TEMPLATE_UNSUBSCRIBE_LINK = "http://%s/unsubscribe/%s";
 }

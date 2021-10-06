@@ -1,4 +1,3 @@
 server:
-  port:
-  publishAddress:
-  address:
+  port: 80
+  publishAddress: daily-code.ruleeeer.cn

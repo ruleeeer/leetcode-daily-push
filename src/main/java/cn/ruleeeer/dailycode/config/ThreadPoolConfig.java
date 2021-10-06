@@ -19,9 +19,9 @@ public class ThreadPoolConfig {
     @Bean("sendEmailThreadPool")
     public ThreadPoolTaskExecutor sendEmailThreadPool() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setCorePoolSize(2);
-        taskExecutor.setMaxPoolSize(20);
-        taskExecutor.setQueueCapacity(200);
+        taskExecutor.setCorePoolSize(1);
+        taskExecutor.setMaxPoolSize(1);
+        taskExecutor.setQueueCapacity(Integer.MAX_VALUE);
         taskExecutor.setKeepAliveSeconds(60);
         taskExecutor.setThreadNamePrefix("sendEmailThreadPool--");
         taskExecutor.setWaitForTasksToCompleteOnShutdown(false);

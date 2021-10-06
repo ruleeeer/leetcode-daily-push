@@ -24,8 +24,6 @@ import java.util.Optional;
 @Component
 public class FetchUtil {
 
-    public Map<String, DailyCode> cache = new HashMap<>();
-
     private FetchUtil() {
     }
 

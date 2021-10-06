@@ -8,9 +8,13 @@ import java.time.format.DateTimeFormatter;
  */
 public class MyConstant {
 
-    static public DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static final String REDIS_KEY_SUCCESS_ONE = "success_%s";
+    public static final String REDIS_KEY_SUCCESS_TWO = "success_%s_%s";
+    public static final String REDIS_KEY_LEETCODE = "leetcode_%s";
+    public static final String REDIS_KEY_FAILED = "failed_send_record";
+    public static DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    static public String TEMPLATE_VERIFICATION = """
+    public static String TEMPLATE_VERIFICATION = """
             <!DOCTYPE html>
             <html lang="en">
             <head>

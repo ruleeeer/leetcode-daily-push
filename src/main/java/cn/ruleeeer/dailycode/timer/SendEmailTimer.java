@@ -55,6 +55,8 @@ public class SendEmailTimer {
                             if (null == result || result.isEmpty()) {
 //                                set send email task
                                 sendEmailThreadPool.submit(new SendDailyCodeEmailTask(date, email));
+                            } else {
+                                log.info("{} has send today leetcode , dont need to resend", email);
                             }
                         });
             }

@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 public class RedisTemplateConfig {
 
     @Bean
-    ReactiveRedisOperations<String, DailyCode> redisOperations(ReactiveRedisConnectionFactory factory) {
+    ReactiveRedisTemplate<String, DailyCode> redisOperations(ReactiveRedisConnectionFactory factory) {
         Jackson2JsonRedisSerializer<DailyCode> serializer = new Jackson2JsonRedisSerializer<>(DailyCode.class);
         RedisSerializationContext.RedisSerializationContextBuilder<String, DailyCode> builder =
                 RedisSerializationContext.newSerializationContext(new StringRedisSerializer());

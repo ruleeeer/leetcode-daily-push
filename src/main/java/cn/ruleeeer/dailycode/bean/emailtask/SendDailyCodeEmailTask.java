@@ -90,13 +90,13 @@ public class SendDailyCodeEmailTask implements Runnable {
                         stringOpsForValue.set(
                                 String.format(MyConstant.REDIS_KEY_SUCCESS_TWO, date, md5Email),
                                 String.valueOf(System.currentTimeMillis()), Duration.ofHours(24)).subscribe();
+                        stopWatch.stop();
+                        log.info("send mail success , receiver : {} , cost : {}ms  ", email, stopWatch.getLastTaskTimeMillis());
                     } catch (MessagingException e) {
                         log.error("send mail failed , receiver : {}", email, e);
 //                        redis record failed
                         redisTemplate.opsForList().rightPush(MyConstant.REDIS_KEY_FAILED + "_" + date, item);
                     }
-                    stopWatch.stop();
-                    log.info("send mail success , receiver : {}  ", email);
                 });
     }
 }

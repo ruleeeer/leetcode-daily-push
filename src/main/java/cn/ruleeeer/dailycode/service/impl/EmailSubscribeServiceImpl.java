@@ -12,7 +12,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
+
+import java.time.Duration;
+import java.time.LocalDate;
+import java.util.function.Consumer;
 
 
 /**
@@ -31,6 +37,9 @@ public class EmailSubscribeServiceImpl extends ServiceImpl<EmailSubscribeMapper,
 
     @Autowired
     private FetchLeetcodeService fetchLeetcodeService;
+
+    @Autowired
+    private ReactiveRedisTemplate<String, String> redisTemplate;
 
     @Autowired
     private SendMailQueue sendMailQueue;
@@ -85,8 +94,15 @@ public class EmailSubscribeServiceImpl extends ServiceImpl<EmailSubscribeMapper,
             subscribeMapper.insert(emailSubscribe);
 
 //            send a leetcode email immediately after subscribed
+            String redisKey = String.format(MyConstant.REDIS_KEY_SUCCESS_TWO,
+                    LocalDate.now().format(MyConstant.FMT),
+                    DigestUtils.md5DigestAsHex(email.getBytes()));
+            Consumer<MailContent> consumer = notUse -> redisTemplate.opsForValue().set(redisKey, String.valueOf(System.currentTimeMillis()), Duration.ofHours(24)).subscribe();
             fetchLeetcodeService.fetchAndBuild(email)
-                    .subscribe(mailContent -> sendMailQueue.put(mailContent));
+                    .subscribe(mailContent -> {
+                        mailContent.setCallback(consumer);
+                        sendMailQueue.put(mailContent);
+                    });
             return Result.builder()
                     .success(true)
                     .msg("subscribe success")

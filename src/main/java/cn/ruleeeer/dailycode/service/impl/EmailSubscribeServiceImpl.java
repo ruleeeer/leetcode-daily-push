@@ -1,21 +1,19 @@
 package cn.ruleeeer.dailycode.service.impl;
 
 import cn.ruleeeer.dailycode.bean.*;
-import cn.ruleeeer.dailycode.bean.emailtask.SendDailyCodeEmailTask;
-import cn.ruleeeer.dailycode.bean.emailtask.SendSimpleEmailTask;
+import cn.ruleeeer.dailycode.queue.SendMailQueue;
 import cn.ruleeeer.dailycode.bean.po.EmailSubscribe;
 import cn.ruleeeer.dailycode.config.ServerInfo;
 import cn.ruleeeer.dailycode.mapper.EmailSubscribeMapper;
 import cn.ruleeeer.dailycode.service.EmailSubscribeService;
+import cn.ruleeeer.dailycode.service.FetchLeetcodeService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 
 /**
  * @author ruleeeer
@@ -32,7 +30,10 @@ public class EmailSubscribeServiceImpl extends ServiceImpl<EmailSubscribeMapper,
     private ServerInfo serverInfo;
 
     @Autowired
-    private ThreadPoolTaskExecutor sendEmailThreadPool;
+    private FetchLeetcodeService fetchLeetcodeService;
+
+    @Autowired
+    private SendMailQueue sendMailQueue;
 
     @Override
     public Result subscribe(String email) {
@@ -51,9 +52,13 @@ public class EmailSubscribeServiceImpl extends ServiceImpl<EmailSubscribeMapper,
             MailContent ensureEmail = MailContent.builder()
                     .receiver(email)
                     .subject("每日一题确认订阅邮件")
-                    .htmlContent(String.format(MyConstant.TEMPLATE_VERIFICATION, link))
+                    .htmlContent(String.format(MyConstant.TEMPLATE_VERIFICATION, link, MyConstant.LINK_GITHUB, MyConstant.LINK_GITHUB))
                     .build();
-            sendEmailThreadPool.submit(new SendSimpleEmailTask(ensureEmail));
+            try {
+                sendMailQueue.queue.put(ensureEmail);
+            } catch (InterruptedException e) {
+                log.error("queue put error", e);
+            }
             return Result.builder()
                     .success(true)
                     .msg("Please check the confirmation subscription email")
@@ -77,10 +82,11 @@ public class EmailSubscribeServiceImpl extends ServiceImpl<EmailSubscribeMapper,
             EmailSubscribe emailSubscribe = EmailSubscribe.builder()
                     .email(email)
                     .build();
-//            send a leetcode email immediately after subscribed
             subscribeMapper.insert(emailSubscribe);
-            String date = LocalDate.now().format(MyConstant.fmt);
-            sendEmailThreadPool.submit(new SendDailyCodeEmailTask(date, email));
+
+//            send a leetcode email immediately after subscribed
+            fetchLeetcodeService.fetchAndBuild(email)
+                    .subscribe(mailContent -> sendMailQueue.put(mailContent));
             return Result.builder()
                     .success(true)
                     .msg("subscribe success")

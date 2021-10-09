@@ -12,7 +12,8 @@ public class MyConstant {
     public static final String REDIS_KEY_SUCCESS_TWO = "success_%s_%s";
     public static final String REDIS_KEY_LEETCODE = "leetcode_%s";
     public static final String REDIS_KEY_FAILED = "failed_send_record";
-    public static DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static DateTimeFormatter FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
 
     public static String TEMPLATE_VERIFICATION = """
             <!DOCTYPE html>
@@ -29,6 +30,12 @@ public class MyConstant {
               </p>
                   <a href="%s">点击订阅</a>
               </p>
+              </br>
+              </br>
+              <HR>
+              <p>
+                github：<a href="%s">%s</a>
+              </p>
             </body>
             </html>
             """;
@@ -44,7 +51,13 @@ public class MyConstant {
               <p>难度：%s</p>
               <div>%s</div>
               <p>
-                <a href="%s">原题链接：%s</a>
+                原题链接：<a href="%s">%s</a>
+              </p>
+              </br>
+              </br>
+              <HR>
+              <p>
+                github：<a href="%s">%s</a>
               </p>
               <p>
                 <a href="%s">取消订阅请点击此处</a>
@@ -56,4 +69,6 @@ public class MyConstant {
     public static String TEMPLATE_ENSURE_SUBSCRIBE_LINK = "http://%s/ensure/%s";
 
     public static String TEMPLATE_UNSUBSCRIBE_LINK = "http://%s/unsubscribe/%s";
+
+    public static String LINK_GITHUB = "https://github.com/ruleeeer/leetcode-daily-push";
 }

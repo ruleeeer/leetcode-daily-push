@@ -13,16 +13,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ThreadPoolConfig {
 
-    /**
-     * 执行短信关键字提取的线程池
-     */
     @Bean("sendEmailThreadPool")
     public ThreadPoolTaskExecutor sendEmailThreadPool() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         taskExecutor.setCorePoolSize(1);
         taskExecutor.setMaxPoolSize(1);
         taskExecutor.setQueueCapacity(Integer.MAX_VALUE);
-        taskExecutor.setKeepAliveSeconds(60);
         taskExecutor.setThreadNamePrefix("sendEmailThreadPool--");
         taskExecutor.setWaitForTasksToCompleteOnShutdown(false);
         return taskExecutor;

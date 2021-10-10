@@ -48,10 +48,9 @@ public class SendEmailTimer {
         String date = LocalDate.now().format(MyConstant.FMT);
         if (!list.isEmpty()) {
             ReactiveValueOperations<String, String> opsForValue = redisTemplate.opsForValue();
-            List<String> onlyOneKey = new ArrayList<>(1);
             for (EmailSubscribe emailSubscribe : list) {
                 String email = emailSubscribe.getEmail();
-                onlyOneKey.clear();
+                List<String> onlyOneKey = new ArrayList<>(1);
 //                redis key
                 String redisKey = String.format(MyConstant.REDIS_KEY_SUCCESS_TWO, date, DigestUtils.md5DigestAsHex(email.getBytes()));
                 onlyOneKey.add(redisKey);

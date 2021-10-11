@@ -41,6 +41,15 @@ public class SendEmailTimer {
     @Autowired
     private ReactiveRedisTemplate<String, String> redisTemplate;
 
+
+    /**
+     * Try to set the cache, otherwise requesting the leetcode at 8 o'clock at the same time will cause the request limit
+     */
+    @Scheduled(cron = "0 5 1-7 * * ?")
+    public void fetchTodayDailyCode(){
+        fetchLeetcodeService.fetchDailyCode().subscribe();
+    }
+
     @Scheduled(cron = "0 0 8 * * ?")
     public void sendEmail() {
 

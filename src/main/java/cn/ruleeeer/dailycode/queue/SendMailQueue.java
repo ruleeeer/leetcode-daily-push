@@ -43,11 +43,10 @@ public class SendMailQueue {
 //        use singleton thread to send email
         Runnable task = () -> {
             while (true) {
-                StopWatch stopWatch = StopWatch.create();
                 MailContent mail = null;
                 try {
-                    stopWatch.start();
                     mail = queue.take();
+                    StopWatch stopWatch = StopWatch.createStarted();
                     emailUtil.sendMail(mail);
                     stopWatch.stop();
                     log.info("send mail cost time {} ms , subject:{} ,receiver:{} ", stopWatch.getTime(TimeUnit.MILLISECONDS), mail.getSubject(), mail.getReceiver());

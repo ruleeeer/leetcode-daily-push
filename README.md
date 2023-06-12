@@ -1,3 +1,6 @@
+# 归档原因
+Java服务较为繁重且服务器到期，我写了一个nodeJS版本的，可以直接在vercel上部署更方便使用且不需要购买服务器，项目地址：https://github.com/ruleeeer/leetcode-daily-mailer
+
 # leetcode-daily-push
 一个每日早晨自动推送LeetCode每日一题的工具
 + 你可以使用`http://daily-code.ruleeeer.cn:1024/subscribe/${your_email}` 来订阅该服务，邮件大概会在每天早晨8点发出
